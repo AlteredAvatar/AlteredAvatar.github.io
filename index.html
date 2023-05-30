@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script src="/js/video_comparison.js"></script>
+    <title>AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!--    </script>-->
+    <style type="text/css">
+
+        .meshViewer {
+            height: 256px;
+            width: 256px;
+            border: none;
+            overflow: hidden;
+            display: none;
+        }
+
+        .video {
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        .videoMerge {
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+            background-size: cover;
+        }
+
+        .viewerToggle {
+            display: block;
+            text-align: center;
+            overflow: hidden;
+            border: none;
+            margin-top: 10px;
+        }
+
+        .viewerToggle:hover {
+            text-decoration: none;
+        }
+
+        #load_more {
+            text-decoration: none;
+        }
+
+        .largeContainer {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            row-gap: 30px;
+        }
+
+        .emptydiv {
+            height: 59px;
+        }
+
+        .div-only-desk {
+        }
+
+        .div-only-mobile {
+        }
+
+        @media screen and (min-width: 1240px) and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+            .div-only-desk {
+                visibility: visible;
+            }
+
+            .div-only-mobile {
+                visibility: hidden;
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 1239px) {
+            .div-only-desk {
+                visibility: hidden;
+                display: none;
+            }
+
+            .div-only-mobile {
+                visibility: visible;
+            }
+        }
+
+        @keyframes placeHolderShimmer {
+            0% {
+                background-position: -800px 0
+            }
+            100% {
+                background-position: 800px 0
+            }
+        }
+
+        .animated-background {
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+            animation-name: placeHolderShimmer;
+            animation-timing-function: linear;
+            background-color: #f6f7f8;
+            background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+            background-size: 800px 104px;
+            height: 256px;
+            width: 256px;
+            position: relative;
+        }
+
+    </style>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icon32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icon32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icon16x16..png">
+
+    <meta property="og:site_name" content="AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation"/>
+    <meta property="og:description" content="AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation, 2023."/>
+    <meta property="og:image" content="https://alteredavatar.github.io/assets/images/teaser.png"/>
+
+    <meta name="twitter:title" content="AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation"/>
+    <meta name="twitter:description"
+          content="We present a method that can quickly adapt a dynamic photorealistic avatar to novel styles using texts, images or both."/>
+    <meta name="twitter:image" content="https://alteredavatar.github.io/assets/images/teaser.png"/>
+</head>
+
+
+<style type="text/css">
+    body {
+        font-family: "Verdana"
+    }
+</style>
+
+
+<body>
+<div class="w3-container w3-padding-32">
+    <h1 class=" " style="text-align: center;"><b>AlteredAvatar</b></h1>
+    <h1 class=" " style="text-align: center;">Stylizing Dynamic 3D Avatars with Fast Style Adaptation</h1>
+</div>
+
+<div class="container" style="max-width: 780px;">
+    <div class="row authors" style="padding-bottom: 15px;">
+        <div class="col-sm-4">
+            <h5 class="text-center">Thu Nguyen-Phuoc</h5>
+        </div>
+        <div class="col-sm-3">
+            <h5 class="text-center">Gabriel Schwartz</h5>
+        </div>
+        <div class="col-sm-3">
+            <h5 class="text-center">Yuting Ye</h5>
+        </div>
+        <div class="col-sm-3">
+            <h5 class="text-center"></h5>
+        </div>
+        <div class="col-sm-4">
+            <h5 class="text-center">Stephen Lombardi</h5>
+        </div>
+        <div class="col-sm-2">
+            <h5 class="text-center">Lei Xiao</h5>
+        </div>
+    </div>
+    <div class="w3-display-container w3-content" style="max-width: 780px; padding-bottom: 20px;">
+        <h5 class="text-center" style="text-align: center;"><b>Reality Labs Research, Meta</b></h5>
+    </div>
+    <div class="w3-display-container w3-content" style="max-width: 780px; padding-bottom: 20px;">
+        <h4 class="text-center" style="text-align: center;"><a href="assets/AA_paper.pdf">[Paper]</a></h4>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1080px;" id="home">
+    <video loop autoplay muted playsinline src="assets/videos/AA_teaser_low.mp4" style="width:100%; "></video>
+           <!-- poster="assets/images/teaser.png"> -->
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1200px">
+
+    <!-- Abstract Section -->
+    <div class="w3-container w3-padding-32">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Abstract</h2>
+        <p>
+            This paper presents a method that can quickly adapt dynamic 3D avatars to arbitrary text descriptions of novel styles. Among existing approaches for avatar stylization, direct optimization methods can produce excellent results for arbitrary styles but they are unpleasantly slow. Furthermore, they require redoing the optimization process from scratch for every new input. Fast approximation methods using feed-forward networks trained on a large dataset of style images can generate results for new inputs quickly, but tend not to generalize well to novel styles and fall short in quality. We therefore investigate a new approach, AlteredAvatar, that combines those two approaches using the meta-learning framework. In the inner loop, the model learns to optimize to match a single target style well; while in the outer loop, the model learns to stylize efficiently across many styles. After training, AlteredAvatar learns an initialization that can quickly adapt within a small number of update steps to a novel style, which can be given using texts, a reference image, or a combination of both. We show that AlteredAvatar can achieve a good balance between speed, flexibility and quality, while maintaining consistency across a wide range of novel views and facial expressions. 
+        </p>
+    </div>
+    <!-- Video Section -->
+    <div class="w3-container w3-padding-32">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Video</h2>
+    </div>
+    <header class="w3-display-container w3-content w3-wide" style="max-width:720px;"  id="home">
+        <video playsinline onclick="this.play()" controls="controls" preload="none" src="assets/videos/AA_Main_low.mp4" style="width:100%; "
+               poster="assets/images/video_teaser.png"></video>
+               
+    </header>
+
+    <!-- Citation -->
+    <div class="w3-row-padding largeContainer">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Citation</h2>
+    </div>
+    <div class="w3-row-padding largeContainer">
+        <div class="w3-col w3-margin-bottom">
+            <code>
+            @article{nguyenphuoc2023AA,<br>
+            &nbsp; author    = {Nguyen-Phuoc, Thu and Schwartz, Gabriel and Ye, Yuting and Lombardi, Stephen and Xiao, Lei<br>
+            &nbsp; title     = {AlteredAvatar: Stylizing Dynamic 3D Avatars with Fast Style Adaptation},<br>
+            &nbsp; year      = {2023},<br>
+        }</code>
+        </div>
+    </div>
+
+    <!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+</footer>
+
+<script type="text/javascript">
+    vid_button = document.getElementsByClassName("mesh-button");
+    for (var i = 0; i < vid_button.length; i++) {
+        let id = vid_button[i].id;
+        let id_base = id.substring(0, id.length - 7);
+        let button = document.getElementById(id);
+        let canvas = document.getElementById(id_base + "Merge");
+        let model = document.getElementById(id_base + "-model");
+        button.onclick = function () {
+            canvas.style.display = "none";
+            button.style.display = "none";
+            model.style.display = "block";
+        }
+    }
+
+</script>
+<script src="/js/scripts.js"></script>
+</body>
+</html>
